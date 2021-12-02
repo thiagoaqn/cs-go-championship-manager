@@ -1,0 +1,1 @@
+# cs-go-championship-manager
