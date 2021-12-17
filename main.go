@@ -1,41 +1,25 @@
 package main
 
 import (
-    "fmt"
-    "log"
-    "net/http"
-    "encoding/json"
+	"cs-go-championship-manager/app"
+	"log"
+	"net/http"
 )
 
-type Player struct {
-    Name string `json:name`
-    Nickname string `json:nickname`
+func checkError(err error) {
+	if err != nil {
+		log.Println("Server crashed")
+	}
 }
 
-type Players []Player
+func main() {
+	app := app.New()
 
-func allPlayers(w http.ResponseWriter, r *http.Request) {
-    players := Players{
-        Player{Name:"Thiago", Nickname: "thiagoaqn"},
-        Player{Name:"Bruno", Nickname: "brunolrib"},
-        Player{Name:"Luiz", Nickname: "LuizNach"},
-        Player{Name:"Elkerton", Nickname: "elkerton"},
-        Player{Name:"Fernando", Nickname: "ffrm"},
-    }
-    fmt.Println("Hit in players endpoint")
-    json.NewEncoder(w).Encode(players)
-}
+	log.Println("Server is Running!")
 
-func homePage(w http.ResponseWriter, r *http.Request){
-  fmt.Fprintf(w, "Bora pro dojô? obs: isso foi feito em GO")
-}
+	http.HandleFunc("/", app.Router.ServeHTTP)
 
-func handleRequests(){
-    http.HandleFunc("/", homePage)
-    http.HandleFunc("/players", allPlayers)
-    log.Fatal(http.ListenAndServe(":8081", nil))
-}
+	err := http.ListenAndServe(":8081", nil)
 
-func main(){
-    handleRequests()
+	checkError(err)
 }
