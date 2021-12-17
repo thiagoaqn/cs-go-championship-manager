@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres
+    container_name: postgres-cs-go-championship-manager
+    environment:
+      - POSTGRES_DB=cs-go-championship-manager
+      - POSTGRES_USER=dojo
+      - POSTGRES_PASSWORD=dojo
+    ports:
+      - "15432:5432"
